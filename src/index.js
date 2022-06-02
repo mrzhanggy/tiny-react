@@ -18,13 +18,24 @@ const virtualDOM = (
     </div>
 )
 function Demo () {
-    return <div>hello</div>
+    return <div>函数组件</div>
 }
 function Heart (props) {
     return <div>&hearts;<Demo/>{props.title}</div>
 }
 
-// TinyReact.render(virtualDOM, document.getElementById("root"), '')
+class Alert extends TinyReact.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return <div>类组件{this.props.title}</div>
+    }
+}
 
-TinyReact.render(<Heart title="hello tinyReact"/>, document.getElementById("root"), '')
+// 原生VirtualDOM
+// TinyReact.render(virtualDOM, document.getElementById("root"), '')
+// TinyReact.render(<Heart title="组件渲染：函数组件"/>, document.getElementById("root"), '')
+TinyReact.render(<Alert title="组件渲染：类组件"/>, document.getElementById("root"), '')
+
 console.log(virtualDOM)
