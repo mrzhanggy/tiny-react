@@ -33,5 +33,5 @@ export default function mountComponent(virtualDOM, container) {
  */
 function buildFunctionComponent(virtualDOM) {
     // virtualDOM.type 存储着函数组件本身
-    return virtualDOM.type()
+    return virtualDOM.type(virtualDOM.props || {});
 }
