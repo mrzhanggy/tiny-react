@@ -17,4 +17,4 @@ const virtualDOM = (
         <input type="text" value="13" />
     </div>
 )
-console.log(virtualDOM)
+TinyReact.render(virtualDOM, document.getElementById("root"))
