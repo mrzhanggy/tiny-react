@@ -1,5 +1,6 @@
 import mountElement from "./mountElement";
 import updateTextNode from "./updateTextNode";
+import updateNodeElement from "./updateNodeElement";
 
 /**
  * 计算如何渲染
@@ -22,6 +23,7 @@ export default function diff(virtualDOM, container, oldDOM) {
             updateTextNode(virtualDOM, oldVirtualDOM, oldDOM);
         } else {
             // 如果是元素节点就更新属性
+            updateNodeElement(oldDOM, virtualDOM, oldVirtualDOM);
         }
 
         // 遍历子元素进行更新
