@@ -48,23 +48,40 @@ function Heart (props) {
 class Alert extends TinyReact.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            title: 'default title',
+            count: 0
+        }
+        this.handleChangeTitle = this.handleChangeTitle.bind(this);
     }
     render() {
-        return <div>类组件{this.props.title}</div>
+        console.log(this.state.title)
+        return (
+            <div>
+                <div>类组件{this.props.title}</div>
+                <p>{this.state.title}</p>
+                <button onClick={this.handleChangeTitle}>change title</button>
+            </div>
+        )
     }
+
+    handleChangeTitle() {
+        // 调用的是父类中的方法
+        this.setState({
+            title: 'changed title'
+        })
+    }
+
 }
 
 // 原生VirtualDOM
 // TinyReact.render(virtualDOM, document.getElementById("root"), '')
 // TinyReact.render(<Heart title="组件渲染：函数组件"/>, document.getElementById("root"), '')
-// TinyReact.render(<Alert title="组件渲染：类组件"/>, document.getElementById("root"), '')
+TinyReact.render(<Alert title="组件渲染：类组件"/>, document.getElementById("root"), '')
 
 // 更新DOM
-TinyReact.render(virtualDOM, root);
-
-setTimeout(() => {
-    TinyReact.render(modifyDOM, root);
-}, 2000)
-
-
-console.log(virtualDOM)
+// TinyReact.render(virtualDOM, root);
+//
+// setTimeout(() => {
+//     TinyReact.render(modifyDOM, root);
+// }, 2000)

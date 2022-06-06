@@ -44,5 +44,8 @@ function buildClassComponent(virtualDOM) {
     // 对于处理类组件需要拿到组件的实例对象，才能拿到组件内部的render方法，通过render方法得到类组件返回的virtualDOM
     // virtualDOM.type 中存储类组件的构造函数
     const component = new virtualDOM.type(virtualDOM.props || {} );
-    return component.render();
+    const nextVirtualDOM = component.render();
+    // 把实例保存在返回的virtualDOM中
+    nextVirtualDOM.component = component;
+    return nextVirtualDOM;
 }
