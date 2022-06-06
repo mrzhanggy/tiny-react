@@ -2,6 +2,7 @@ import mountElement from "./mountElement";
 import updateTextNode from "./updateTextNode";
 import updateNodeElement from "./updateNodeElement";
 import createDOMElement from "./createDOMElement";
+import unmountNode from "./unmountNode";
 
 /**
  * 计算如何渲染
@@ -31,7 +32,17 @@ export default function diff(virtualDOM, container, oldDOM) {
         // 遍历子元素进行更新
         virtualDOM.children.forEach((child, index) => {
             diff(child, oldDOM, oldDOM.childNodes[index])
-        })
+        });
+
+        // 删除节点
+        const oldChildNodes = oldDOM.childNodes;
+        const newChildNodes = virtualDOM.children;
+
+        if(oldChildNodes.length > newChildNodes.length) {
+            for (let i = oldChildNodes.length - 1; i > newChildNodes.length - 1; i--) {
+                unmountNode(oldChildNodes[i])
+            }
+        }
 
     // 两个DOM的类型不同并且判断该组件不为函数
     } else if(virtualDOM.type !== oldVirtualDOM.type && typeof virtualDOM.type !== 'function') {
