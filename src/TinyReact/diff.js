@@ -1,6 +1,7 @@
 import mountElement from "./mountElement";
 import updateTextNode from "./updateTextNode";
 import updateNodeElement from "./updateNodeElement";
+import createDOMElement from "./createDOMElement";
 
 /**
  * 计算如何渲染
@@ -9,7 +10,6 @@ import updateNodeElement from "./updateNodeElement";
  * @param oldDOM 页面的真实DOM结构container.firstChild
  */
 export default function diff(virtualDOM, container, oldDOM) {
-
     // 验证oldVirtualDOM是否存在
     const oldVirtualDOM = oldDOM && oldDOM._virtualDOM;
 
@@ -17,7 +17,9 @@ export default function diff(virtualDOM, container, oldDOM) {
     if(!oldVirtualDOM) {
         // 判断是普通的VirtualDOM对象还是组件形式的virtualDOM对象
         mountElement(virtualDOM, container);
-    } else if(oldVirtualDOM && virtualDOM.type === oldVirtualDOM.type) { // 判断两个dom的类型是否相同
+
+    // 两个DOM的类型相同
+    } else if(oldVirtualDOM && virtualDOM.type === oldVirtualDOM.type) {
         if(virtualDOM.type === 'text') {
             // 如果是文本节点就更新内容
             updateTextNode(virtualDOM, oldVirtualDOM, oldDOM);
@@ -30,5 +32,12 @@ export default function diff(virtualDOM, container, oldDOM) {
         virtualDOM.children.forEach((child, index) => {
             diff(child, oldDOM, oldDOM.childNodes[index])
         })
+
+    // 两个DOM的类型不同并且判断该组件不为函数
+    } else if(virtualDOM.type !== oldVirtualDOM.type && typeof virtualDOM.type !== 'function') {
+        // 生成新的DOM对象
+        const newElement = createDOMElement(virtualDOM);
+        // 替换旧的DOM对象
+        oldDOM.parentNode.replaceChild(newElement, oldDOM);
     }
 }

@@ -1,6 +1,11 @@
 import mountElement from "./mountElement";
 import updateNodeElement from "./updateNodeElement";
 
+/**
+ * 使用virtualDOM 生成真实的DOM元素
+ * @param virtualDOM
+ * @returns {*}
+ */
 export default function createDOMElement(virtualDOM) {
     let newElement = null;
     // 判断元素节点类型
