@@ -8,7 +8,7 @@
 export default function createElement(type, props, ...children) {
     // {2 === 1 && <div>如果2和1相等渲染当前内容</div>} 使用 reduce 方法把值为null/true/false的去除掉，因为这些并不会在页面中显示。
     const childElements = [].concat(...children).reduce((result, child) => {
-        if(typeof child !== true || child !== false || child !== null) {
+        if(child !== true && child !== false && child !== null) {
             // 将对象节点和文本节点分开处理
             if(child instanceof Object) {
                 result.push(child);

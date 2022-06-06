@@ -12,6 +12,10 @@ export default function createDOMElement(virtualDOM) {
         // 为元素添加属性
         updateNodeElement(newElement, virtualDOM);
     }
+
+    // 将VirtualDOM存于DOM本身的属性上
+    newElement._virtualDOM = virtualDOM;
+
     // 递归创建子节点，再通过mountElement判断是哪一种VirtualDOM
     virtualDOM.children.forEach(child => mountElement(child, newElement));
 
