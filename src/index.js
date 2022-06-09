@@ -66,6 +66,18 @@ class Alert extends TinyReact.Component {
         )
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log('componentWillReceiveProps', nextProps)
+    }
+
+    componentWillUpdate() {
+        console.log('componentWillUpdate')
+    }
+
+    componentDidUpdate() {
+        console.log('componentDidUpdate')
+    }
+
     handleChangeTitle() {
         // 调用的是父类中的方法
         this.setState({
@@ -89,8 +101,14 @@ class Alert extends TinyReact.Component {
 
 
 // 组件更新：不是同一个组件
+// TinyReact.render(<Alert title="组件渲染：类组件"/>, root);
+// setTimeout(() => {
+//     TinyReact.render(<Heart title="组件渲染：函数组件"/>, root);
+// }, 2000)
+
+// 组件更新：同一个组件
 TinyReact.render(<Alert title="组件渲染：类组件"/>, root);
 setTimeout(() => {
-    TinyReact.render(<Heart title="组件渲染：函数组件"/>, root);
+    TinyReact.render(<Alert title="组件渲染：更新类组件"/>, root);
 }, 2000)
 
