@@ -1,4 +1,5 @@
 import TinyReact from "./TinyReact";
+import tinyReact from "./TinyReact";
 
 const virtualDOM = (
     <div className="container">
@@ -77,7 +78,7 @@ class Alert extends TinyReact.Component {
 // 原生VirtualDOM
 // TinyReact.render(virtualDOM, document.getElementById("root"), '')
 // TinyReact.render(<Heart title="组件渲染：函数组件"/>, document.getElementById("root"), '')
-TinyReact.render(<Alert title="组件渲染：类组件"/>, document.getElementById("root"), '')
+// TinyReact.render(<Alert title="组件渲染：类组件"/>, document.getElementById("root"), '')
 
 // 更新DOM
 // TinyReact.render(virtualDOM, root);
@@ -85,3 +86,11 @@ TinyReact.render(<Alert title="组件渲染：类组件"/>, document.getElementB
 // setTimeout(() => {
 //     TinyReact.render(modifyDOM, root);
 // }, 2000)
+
+
+// 组件更新：不是同一个组件
+TinyReact.render(<Alert title="组件渲染：类组件"/>, root);
+setTimeout(() => {
+    TinyReact.render(<Heart title="组件渲染：函数组件"/>, root);
+}, 2000)
+

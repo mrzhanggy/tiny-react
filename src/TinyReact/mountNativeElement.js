@@ -4,9 +4,14 @@
  * @param container
  */
 import createDOMElement from "./createDOMElement";
+import unmountNode from "./unmountNode";
 
-export default function mountNativeElement(virtualDOM, container) {
+export default function mountNativeElement(virtualDOM, container, oldDOM) {
     let newElement = createDOMElement(virtualDOM);
+    // 判断旧的DOM是否存在，如果存在则删除
+    if(oldDOM) {
+        unmountNode(oldDOM);
+    }
     // 将创建的元素挂载到容器
     container.appendChild(newElement);
     // 获取组件实例对象

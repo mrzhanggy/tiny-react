@@ -3,6 +3,7 @@ import updateTextNode from "./updateTextNode";
 import updateNodeElement from "./updateNodeElement";
 import createDOMElement from "./createDOMElement";
 import unmountNode from "./unmountNode";
+import diffComponent from "./diffComponent";
 
 /**
  * 计算如何渲染
@@ -13,6 +14,7 @@ import unmountNode from "./unmountNode";
 export default function diff(virtualDOM, container, oldDOM) {
     // 验证oldVirtualDOM是否存在
     const oldVirtualDOM = oldDOM && oldDOM._virtualDOM;
+    const oldComponent = oldVirtualDOM && oldVirtualDOM.component;
 
     // 判断 oldVirtualDOM 是否存在，如果不存在那就直接将virtualDOM 转为 realDOM
     if(!oldVirtualDOM) {
@@ -50,5 +52,9 @@ export default function diff(virtualDOM, container, oldDOM) {
         const newElement = createDOMElement(virtualDOM);
         // 替换旧的DOM对象
         oldDOM.parentNode.replaceChild(newElement, oldDOM);
+
+    } else if(typeof virtualDOM.type === 'function') {
+        // 组件
+        diffComponent(virtualDOM, oldComponent, oldDOM, container);
     }
 }

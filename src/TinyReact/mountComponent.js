@@ -6,8 +6,9 @@ import isFunction from "./isFunction";
  * 处理组件VirtualDOM
  * @param virtualDOM
  * @param container
+ * @param oldDOM
  */
-export default function mountComponent(virtualDOM, container) {
+export default function mountComponent(virtualDOM, container, oldDOM) {
     let nextVirtualDOM = null;
     // 判断是函数组件还是类组件
     if(isFunctionComponent(virtualDOM)){
@@ -20,10 +21,10 @@ export default function mountComponent(virtualDOM, container) {
 
     // 判断这个函数组件返回的是否是函数组件
     if(isFunction(nextVirtualDOM)) {
-        mountComponent(nextVirtualDOM, container)
+        mountComponent(nextVirtualDOM, container, oldDOM)
     } else {
         // 已经获取到了函数组件返回的原生虚拟DOM，直接用mountNativeElement方法进行创建并渲染
-        mountNativeElement(nextVirtualDOM, container);
+        mountNativeElement(nextVirtualDOM, container, oldDOM);
     }
 }
 
