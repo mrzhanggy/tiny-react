@@ -116,6 +116,50 @@ class DemoRef extends TinyReact.Component {
     }
 }
 
+class DemoKey extends TinyReact.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            persons: [
+                {
+                    id: 1,
+                    name: '1-n'
+                },
+                {
+                    id: 2,
+                    name: '2-n'
+                },
+                {
+                    id: 3,
+                    name: '3-n'
+                }
+            ]
+        }
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick () {
+        const newState = JSON.parse(JSON.stringify(this.state))
+        // newState.persons.push(newState.persons.shift());
+        newState.persons.splice(1, 0, { id: 0, name:'0-n'});
+        this.setState(newState);
+    }
+
+    render() {
+        return (
+            <div>
+                <ul>
+                    {this.state.persons.map(person => (
+                        <li key={person.id}>{person.name}</li>
+                    ))}
+                </ul>
+                <button onClick={this.handleClick}>click</button>
+            </div>
+        )
+    }
+
+}
+
 // 原生VirtualDOM
 // TinyReact.render(virtualDOM, document.getElementById("root"), '')
 // TinyReact.render(<Heart title="组件渲染：函数组件"/>, document.getElementById("root"), '')
@@ -142,5 +186,8 @@ class DemoRef extends TinyReact.Component {
 // }, 2000)
 
 // Ref 获取元素属性
-TinyReact.render(<DemoRef/>, root);
+// TinyReact.render(<DemoRef/>, root);
+
+// Key 属性
+TinyReact.render(<DemoKey/>, root);
 

@@ -31,10 +31,42 @@ export default function diff(virtualDOM, container, oldDOM) {
             updateNodeElement(oldDOM, virtualDOM, oldVirtualDOM);
         }
 
-        // 遍历子元素进行更新
-        virtualDOM.children.forEach((child, index) => {
-            diff(child, oldDOM, oldDOM.childNodes[index])
-        });
+        // 1.将拥有key属性的子元素放置到一个单独的对象中
+        let keyedElements = {};
+        for(let i = 0, len = oldDOM.childNodes.length; i < len; i++) {
+            let domElement = oldDOM.childNodes[i];
+            if(domElement.nodeType === 1) {
+                let key = domElement.getAttribute('key');
+                if(key) {
+                    keyedElements[key] = domElement
+                }
+            }
+        }
+
+        // 如果keyedElements为空了，那就通过索引的方式作对比
+        if(!Object.keys(keyedElements).length) {
+            // 遍历子元素进行更新
+            virtualDOM.children.forEach((child, index) => {
+                diff(child, oldDOM, oldDOM.childNodes[index])
+            });
+        } else {
+            // 2.循环 virtualDOM 的子元素，获取子元素的key属性
+            virtualDOM.children.forEach((child, i) => {
+                let key = child.props.key;
+                if(key) {
+                    let domElement = keyedElements[key];
+                    if(document) {
+                        // 如果成功就可以确定元素是存在的，所以不用做渲染，但是并不能确定位置是否正确
+                        if(oldDOM.childNodes[i] && oldDOM.childNodes[i] !== domElement) {
+                            oldDOM.insertBefore(domElement, oldDOM.childNodes[i]);
+                        }
+                    }
+                } else {
+                    // 表示是一个新增元素,直接去渲染
+                    mountElement(child, oldDOM, oldDOM.childNodes[i]);
+                }
+            })
+        }
 
         // 删除节点
         const oldChildNodes = oldDOM.childNodes;
