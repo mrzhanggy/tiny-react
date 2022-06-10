@@ -24,5 +24,10 @@ export default function createDOMElement(virtualDOM) {
     // 递归创建子节点，再通过mountElement判断是哪一种VirtualDOM
     virtualDOM.children.forEach(child => mountElement(child, newElement));
 
+    // 判断属性中是否存在ref方法
+    if(virtualDOM.props && virtualDOM.props.ref) {
+        virtualDOM.props.ref(newElement);
+    }
+
     return newElement;
 }

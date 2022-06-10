@@ -37,8 +37,10 @@ const modifyDOM = (
     </div>
 )
 
+// 根节点
 const root = document.getElementById("root");
 
+// 函数组件
 function Demo () {
     return <div>函数组件</div>
 }
@@ -46,6 +48,7 @@ function Heart (props) {
     return <div>&hearts;<Demo/>{props.title}</div>
 }
 
+// 类组件
 class Alert extends TinyReact.Component {
     constructor(props) {
         super(props);
@@ -87,6 +90,32 @@ class Alert extends TinyReact.Component {
 
 }
 
+// Ref 获取元素属性
+class DemoRef extends TinyReact.Component {
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick () {
+        console.log(this.input.value, this.alert);
+    }
+
+    render() {
+        return (
+            <div>
+                <input type='text' ref={input => this.input = input}/>
+                <button onClick={this.handleClick}>click</button>
+                <Alert title="组件渲染：类组件" ref={alert => this.alert = alert}/>
+            </div>
+        )
+    }
+
+    componentDidMount() {
+        console.log('componentDidMount')
+    }
+}
+
 // 原生VirtualDOM
 // TinyReact.render(virtualDOM, document.getElementById("root"), '')
 // TinyReact.render(<Heart title="组件渲染：函数组件"/>, document.getElementById("root"), '')
@@ -107,8 +136,11 @@ class Alert extends TinyReact.Component {
 // }, 2000)
 
 // 组件更新：同一个组件
-TinyReact.render(<Alert title="组件渲染：类组件"/>, root);
-setTimeout(() => {
-    TinyReact.render(<Alert title="组件渲染：更新类组件"/>, root);
-}, 2000)
+// TinyReact.render(<Alert title="组件渲染：类组件"/>, root);
+// setTimeout(() => {
+//     TinyReact.render(<Alert title="组件渲染：更新类组件"/>, root);
+// }, 2000)
+
+// Ref 获取元素属性
+TinyReact.render(<DemoRef/>, root);
 

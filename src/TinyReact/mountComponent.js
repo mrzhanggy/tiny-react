@@ -10,6 +10,7 @@ import isFunction from "./isFunction";
  */
 export default function mountComponent(virtualDOM, container, oldDOM) {
     let nextVirtualDOM = null;
+    let component = null;
     // 判断是函数组件还是类组件
     if(isFunctionComponent(virtualDOM)){
         //获取函数组件的native virtual DOM
@@ -17,6 +18,7 @@ export default function mountComponent(virtualDOM, container, oldDOM) {
     } else {
         // 类组件
         nextVirtualDOM = buildClassComponent(virtualDOM);
+        component = nextVirtualDOM.component;
     }
 
     // 判断这个函数组件返回的是否是函数组件
@@ -26,6 +28,15 @@ export default function mountComponent(virtualDOM, container, oldDOM) {
         // 已经获取到了函数组件返回的原生虚拟DOM，直接用mountNativeElement方法进行创建并渲染
         mountNativeElement(nextVirtualDOM, container, oldDOM);
     }
+
+    if(component) {
+        component.componentDidMount();
+        if(component.props && component.props.ref) {
+            component.props.ref(component);
+        }
+    }
+
+
 }
 
 /**
