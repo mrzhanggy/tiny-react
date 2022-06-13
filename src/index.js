@@ -141,7 +141,8 @@ class DemoKey extends TinyReact.Component {
     handleClick () {
         const newState = JSON.parse(JSON.stringify(this.state))
         // newState.persons.push(newState.persons.shift());
-        newState.persons.splice(1, 0, { id: 0, name:'0-n'});
+        // newState.persons.splice(1, 0, { id: 0, name:'0-n'});
+        newState.persons.pop();
         this.setState(newState);
     }
 
@@ -150,7 +151,10 @@ class DemoKey extends TinyReact.Component {
             <div>
                 <ul>
                     {this.state.persons.map(person => (
-                        <li key={person.id}>{person.name}</li>
+                        <li key={person.id}>
+                            {person.name}
+                            <DemoRef/>
+                        </li>
                     ))}
                 </ul>
                 <button onClick={this.handleClick}>click</button>

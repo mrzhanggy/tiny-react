@@ -71,11 +71,33 @@ export default function diff(virtualDOM, container, oldDOM) {
         // 删除节点
         const oldChildNodes = oldDOM.childNodes;
         const newChildNodes = virtualDOM.children;
+        const hasNokey = Object.keys(keyedElements).length === 0;
 
         if(oldChildNodes.length > newChildNodes.length) {
-            for (let i = oldChildNodes.length - 1; i > newChildNodes.length - 1; i--) {
-                unmountNode(oldChildNodes[i])
+            if(hasNokey) {
+                // 有节点需要被删除
+                for (let i = oldChildNodes.length - 1; i > newChildNodes.length - 1; i--) {
+                    unmountNode(oldChildNodes[i]);
+                }
+            } else {
+                // 通过key的方式删除节点
+                for(let i = 0; i < oldChildNodes.length; i ++) {
+                    let oldChild = oldChildNodes[i];
+                    let oldChildKey = oldChild._virtualDOM.props.key;
+
+                    let found = false;
+                    for(let n = 0; n < virtualDOM.children.length; n ++) {
+                        if(oldChildKey === virtualDOM.children[n].props.key) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found) {
+                        unmountNode(oldChild);
+                    }
+                }
             }
+
         }
 
     // 两个DOM的类型不同并且判断该组件不为函数
